@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 
 app = Flask(__name__)
 
-df = pd.read_csv('data/responses2.csv')
+df = pd.read_csv('data/db.csv')
   
   
 # route to html page - "table"
@@ -23,32 +23,19 @@ df = pd.read_csv('data/responses2.csv')
 def table():
     
     # converting csv to html
-    data = pd.read_csv('data/responses2.csv')
+    data = pd.read_csv('data/db.csv')
     return render_template('index.html', tables=[data.to_html()], titles=[''])
   
 
 @app.route('/grupos', methods=['GET', 'POST'])
 def grupos():
-    if request.method == 'POST':
-        # do stuff when the form is submitted
-
-        # redirect to end the POST handling
-        # the redirect can be to the same route or somewhere else
-        return redirect(url_for('index'))
-
-    # show the form, it wasn't submitted
+    data = pd.read_csv('data/db.csv')
+    result = 1 - distance.cosine(data.DiegoMonteroRes, data.DianaBalantaRes)
+    print("Distancia coseno:", result)
     return render_template('grupo.html')
 
 @app.route('/lista', methods=['GET', 'POST'])
 def lista():
-    if request.method == 'POST':
-        # do stuff when the form is submitted
-
-        # redirect to end the POST handling
-        # the redirect can be to the same route or somewhere else
-        return redirect(url_for('index'))
-
-    # show the form, it wasn't submitted
     return render_template('lista.html')
   
 if __name__ == "__main__":
